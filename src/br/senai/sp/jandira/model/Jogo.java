@@ -3,7 +3,7 @@ package br.senai.sp.jandira.model;
 public class Jogo {
 	
 	private String titulo;
-	private String fabricante;
+	private Fabricante fabricante;
 	private boolean zerado;
 	private Console console;
 	private double valor;
@@ -17,12 +17,12 @@ public class Jogo {
 		return titulo;
 	}
 	
-	public String getFabricante() {
-		return fabricante;
-	}
-
-	public void setFabricante(String fabricante) {
+	public void setFabricante(Fabricante fabricante) {
 		this.fabricante = fabricante;
+	}
+	
+	public Fabricante getFabricante() {
+		return fabricante;
 	}
 
 	public boolean isZerado() {
