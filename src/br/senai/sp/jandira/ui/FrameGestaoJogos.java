@@ -84,10 +84,14 @@ public class FrameGestaoJogos extends JFrame {
 		JComboBox cmbFabricante = new JComboBox();
 		cmbFabricante.setBounds(97, 57, 62, 22);
 		panelFormularioJogos.add(cmbFabricante);
-
+		
 		JogoRepository jogos = new JogoRepository(32);
 		FabricanteRepository fabricantes = new FabricanteRepository(32);
+		
+		DefaultComboBoxModel<String> modelFabricante = carregarFabricantes(fabricantes);
 
+		cmbFabricante.setModel(modelFabricante);
+		
 		JCheckBox chbZerado = new JCheckBox("Zerado");
 		chbZerado.setHorizontalAlignment(SwingConstants.CENTER);
 		chbZerado.setBounds(100, 88, 59, 23);
@@ -228,6 +232,9 @@ public class FrameGestaoJogos extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				DefaultComboBoxModel<String> modelFabricante = carregarFabricantes(fabricantes);
+				cmbFabricante.setModel(modelFabricante);
+				
 				panelFormularioJogos.setVisible(true);
 				panelFormularioFabricante.setVisible(false);
 
@@ -259,7 +266,7 @@ public class FrameGestaoJogos extends JFrame {
 		}
 	}
 	
-	private Fabricantes[] carregarFabricantes(Fabricante[] fabricantes) {
+	private DefaultComboBoxModel<String> carregarFabricantes(FabricanteRepository fabricantes) {
 
 		DefaultComboBoxModel<String> modelFabricante = new DefaultComboBoxModel<String>();
 
