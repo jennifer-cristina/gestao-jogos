@@ -38,13 +38,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JSlider;
 
 public class FrameGestaoJogos extends JFrame {
-
+	
 	private JPanel contentPane;
 	private JTextField txtTitulo;
 	private JTextField txtFabricante;
 	private JTextField txtValor;
 	private JTextField txtObservacoes;
-
+ 
 	private int posicaoJogo = 0;
 	private int posicaoFabricante = 0;
 
@@ -84,14 +84,14 @@ public class FrameGestaoJogos extends JFrame {
 		JComboBox cmbFabricante = new JComboBox();
 		cmbFabricante.setBounds(97, 57, 62, 22);
 		panelFormularioJogos.add(cmbFabricante);
-		
+
 		JogoRepository jogos = new JogoRepository(32);
 		FabricanteRepository fabricantes = new FabricanteRepository(32);
-		
+
 		DefaultComboBoxModel<String> modelFabricante = carregarFabricantes(fabricantes);
 
 		cmbFabricante.setModel(modelFabricante);
-		
+
 		JCheckBox chbZerado = new JCheckBox("Zerado");
 		chbZerado.setHorizontalAlignment(SwingConstants.CENTER);
 		chbZerado.setBounds(100, 88, 59, 23);
@@ -175,10 +175,15 @@ public class FrameGestaoJogos extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				Jogo jogo = new Jogo();
+				 Jogo jogo = new Jogo();
 				jogo.setTitulo(txtTitulo.getText());
+				jogo.setFabricante(fabricantes.listarFabricante(cmbFabricante.getSelectedIndex()));
 				jogo.setZerado(chbZerado.isSelected());
 				jogo.setConsole(determinarConsole(cmbConsole.getSelectedIndex()));
+				
+				// Transformando o texto (String) em double, porque ele esta pedindo double.
+				jogo.setValor(Double.parseDouble(txtValor.getText()));
+				jogo.setObservacoes(txtObservacoes.getText());
 
 				jogos.gravar(jogo, posicaoJogo);
 
@@ -188,6 +193,7 @@ public class FrameGestaoJogos extends JFrame {
 
 			}
 		});
+
 
 		btnSalvarFabricante.addActionListener(new ActionListener() {
 
@@ -204,6 +210,26 @@ public class FrameGestaoJogos extends JFrame {
 			}
 		});
 
+		listJogos.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				Jogo jogo = jogos.listarJogo(listJogos.getSelectedIndex());
+
+				txtTitulo.setText(jogo.getTitulo());
+				cmbFabricante.setSelectedIndex(fabricantes.getIndex(jogo.getFabricante()));
+				chbZerado.isSelected();
+				cmbConsole.setSelectedIndex(jogo.getConsole().ordinal());
+				txtValor.setText(Double.parseDouble(jogo.getValor(txtValor.setText())));
+				txtObservacoes.setText(jogo.getObservacoes());
+
+
+
+			}
+		});
+
+		
 		JButton btnDireita = new JButton(">");
 		btnDireita.setBounds(336, 256, 41, 23);
 		panelFormularioJogos.add(btnDireita);
@@ -234,7 +260,7 @@ public class FrameGestaoJogos extends JFrame {
 
 				DefaultComboBoxModel<String> modelFabricante = carregarFabricantes(fabricantes);
 				cmbFabricante.setModel(modelFabricante);
-				
+
 				panelFormularioJogos.setVisible(true);
 				panelFormularioFabricante.setVisible(false);
 
@@ -265,20 +291,20 @@ public class FrameGestaoJogos extends JFrame {
 			return Console.NINTENDO;
 		}
 	}
-	
+
 	private DefaultComboBoxModel<String> carregarFabricantes(FabricanteRepository fabricantes) {
 
 		DefaultComboBoxModel<String> modelFabricante = new DefaultComboBoxModel<String>();
 
-		Fabricante[] fabricantesGravados = fabricantes.listarTodos();		
+		Fabricante[] fabricantesGravados = fabricantes.listarTodos();
 
-			for (Fabricante f : fabricantesGravados) {
-				if (f != null) {
-					modelFabricante.addElement(f.getNome());
-				}
+		for (Fabricante f : fabricantesGravados) {
+			if (f != null) {
+				modelFabricante.addElement(f.getNome());
 			}
+		}
 
-			return modelFabricante;
-			
+		return modelFabricante;
+
 	}
 }
