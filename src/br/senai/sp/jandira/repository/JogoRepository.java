@@ -12,9 +12,7 @@ public class JogoRepository {
 	
 	public void gravar(Jogo jogo, int posicao) {
 		jogos[posicao] = jogo;
-		System.out.println(jogos[posicao].getTitulo());
-		System.out.println(jogos[posicao].getObservacoes());
-		System.out.println(jogos[posicao].getValor());
+
 	}
 	
 	public Jogo listarJogo(int posicao) {
